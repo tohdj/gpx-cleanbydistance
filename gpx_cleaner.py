@@ -23,7 +23,8 @@ def run(activity_gpx):
                 if last is not None:
                     last_point = segment.points[i-1]
                     d = distance((point.latitude, point.longitude), (last_point.latitude, last_point.longitude)).m
-                    if time - last > datetime.timedelta(seconds=1):
+                    if d < 2:
+                    #if time - last > datetime.timedelta(seconds=1):
                         print('Pause {}: {}s | {:.3f}m'.format(stops+1, time - last, d))
                         ret_data['Pause {}'.format(stops+1)] = [time - last, d]
                         removed += time - last
