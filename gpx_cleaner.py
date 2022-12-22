@@ -23,6 +23,7 @@ def run(activity_gpx):
                 if last is not None:
                     last_point = segment.points[i-1]
                     d = distance((point.latitude, point.longitude), (last_point.latitude, last_point.longitude)).m
+                    print('CHECK: Pause {}: {}s | {:.3f}m'.format(stops+1, time - last, d))
                     #if time - last > datetime.timedelta(seconds=1):
                     # if distance travelled is less than 2m, OR time is less than 1 second
                     if (d < 2) or (time - last > datetime.timedelta(seconds=1)):
