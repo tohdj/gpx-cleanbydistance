@@ -24,8 +24,8 @@ def run(activity_gpx):
                     last_point = segment.points[i-1]
                     d = distance((point.latitude, point.longitude), (last_point.latitude, last_point.longitude)).m
                     #if time - last > datetime.timedelta(seconds=1):
-                    # if distance travelled is less than 2m, then the recording could have paused.
-                    if (d < 2):
+                    # if absolute distance travelled is less than 2m, then the recording could have paused.
+                    if (abs(d) < 2):
                         print('Pause {}: {}s | {:.3f}m'.format(stops+1, time - last, d))
                         ret_data['Pause {}'.format(stops+1)] = [time - last, d]
                         removed += time - last
