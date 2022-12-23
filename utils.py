@@ -23,15 +23,15 @@ def td_to_str(td):
     #td = datetime.datetime.strptime(str(td), "%H:%M:%S")
     # if the td comes in different formats.
     try:
-        td = datetime.strptime(str(td), "%Y-%m-%d %H:%M:%S.%f")
+        td = datetime.datetime.strptime(str(td), "%Y-%m-%d %H:%M:%S.%f")
     except:
         try:
-            td = datetime.strptime(str(td), "%Y/%m/%d %H:%M:%S.%f")
+            td = datetime.datetime.strptime(str(td), "%Y/%m/%d %H:%M:%S.%f")
         except:
             try:
-                td = datetime.strptime(str(td), "%H:%M:%S.%f")
+                td = datetime.datetime.strptime(str(td), "%H:%M:%S.%f")
             except:
-                td = datetime.strptime(str(td), "%H:%M:%S")
+                td = datetime.datetime.strptime(str(td), "%H:%M:%S")
     if td.hour != 0:
         td = td.strftime('%Hh %Mm %Ss')
     else:
