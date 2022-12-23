@@ -22,7 +22,7 @@ def get_pace(dist, time, mile=False):
 def td_to_str(td):
     # if the recordings for GPS crosses midnight, then this function will crash.
     # The "-1 day, " substring must be removed, so the function can continue to extract the H, M and S
-    td = str(ts)
+    td = str(td)
     if "-1 day, " in td:
         td = td.replace("-1 day, ", "")
 
