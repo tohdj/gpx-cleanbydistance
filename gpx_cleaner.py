@@ -3,7 +3,7 @@ import datetime
 from geopy.distance import distance
 
 
-def run(activity_gpx):
+def run(activity_gpx, minimumSpeedAsPaused = 0.25): # We set the default value as 0.25
 
     gpx = activity_gpx
     removed = datetime.timedelta()
@@ -30,7 +30,7 @@ def run(activity_gpx):
                     if ((time - last) > datetime.timedelta(seconds=0)):
                         speed = abs(d) / (time - last).total_seconds()
                         # use speed instead of absolute distance travelled. if speed is < 0.25m/s then the recording could have paused.
-                        if (speed < 0.25):
+                        if (speed < minimumSpeedAsPaused):
                             print('Pause {}: {}s | {:.3f}m'.format(stops+1, time - last, d))
                             ret_data['Pause {}'.format(stops+1)] = [time - last, d]
                             removed += time - last
