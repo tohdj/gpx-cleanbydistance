@@ -70,7 +70,7 @@ def show():
     if gpx_file_raw is not None:
 
         gpx_file = gpxpy.parse(gpx_file_raw)
-        gpx_xlm, data = run(gpx_file, minimumSpeedAsPaused)
+        gpx_xlm, data = run(gpx_file, maximumSpeedAsPaused)
 
         data_keys = data.keys()
         stop_keys = [key for key in data_keys if 'Pause ' in key]
