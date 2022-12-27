@@ -60,10 +60,13 @@ def show():
              " time coincide with your moving time while leaving all the other data unchanged. You will then be able to"
              " download your new gpx file and upload it on Strava or on your desired platform.")
     st.write("👉 Feel free to report any bug or suggestion on [Github](https://github.com/davide97l/gpx-cleaner) and leave a ⭐ if you found it useful.")
-    st.write("⚠️ Currently are only supported GPX files whose GPS synchronization frequency is exactly 1 second.")
+    #st.write("⚠️ Currently are only supported GPX files whose GPS synchronization frequency is exactly 1 second.")
+    st.write("⚠️ This is a fork of the original by davide971. This version uses speed to determine if the recording was paused.")
+    st.write("You can select different maximum speed to consider as paused as different activities have different movement speeds.")
+    st.write("For example, cycling generally has a much higher movement speed than running.")
 
     st.write('Select the maximum movement speed value to consider as paused:')
-    maximumSpeedAsPaused = st.slider('Select a range of values', 0.0, 1.0, 0.25, 0.05, None, None, "If the speed between 2 recorded points is below this value, then it is considered to have paused.")
+    maximumSpeedAsPaused = st.slider('Select a range of values', 0.0, 2.0, 0.25, 0.05, None, None, "If the speed between 2 recorded points is below this value, then it is considered to have paused.")
     st.write('You have selected the maximum movement speed value as:', maximumSpeedAsPaused)
 
     gpx_file_raw = st.file_uploader("📂 Upload your activity.gpx file", type=["gpx"], accept_multiple_files=False)
