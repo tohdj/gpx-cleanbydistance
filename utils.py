@@ -62,11 +62,15 @@ def show():
     st.write("👉 Feel free to report any bug or suggestion on [Github](https://github.com/davide97l/gpx-cleaner) and leave a ⭐ if you found it useful.")
     st.write("⚠️ Currently are only supported GPX files whose GPS synchronization frequency is exactly 1 second.")
 
+    st.write('Select the maximum movement speed value to consider as paused:')
+    maximumSpeedAsPaused = st.slider('Select a range of values', 0.0, 1.0, 0.25, 0.1, None, None, "If the speed between 2 recorded points is below this value, then it is considered to have paused.")
+    st.write('You have selected the maximum movement speed value as:', maximumSpeedAsPaused)
+
     gpx_file_raw = st.file_uploader("📂 Upload your activity.gpx file", type=["gpx"], accept_multiple_files=False)
     if gpx_file_raw is not None:
 
         gpx_file = gpxpy.parse(gpx_file_raw)
-        gpx_xlm, data = run(gpx_file)
+        gpx_xlm, data = run(gpx_file, minimumSpeedAsPaused)
 
         data_keys = data.keys()
         stop_keys = [key for key in data_keys if 'Pause ' in key]
