@@ -19,7 +19,7 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
                 time = point.time
                 if i == 0:
                     start = time
-                time -= removed
+                #time -= removed
                 if last is not None:
                     last_point = segment.points[i-1]
                     d = distance((point.latitude, point.longitude), (last_point.latitude, last_point.longitude)).m
