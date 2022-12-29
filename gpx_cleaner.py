@@ -43,7 +43,7 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
                     else:
                         tot_dist += d
                 if removed > datetime.timedelta():
-                    gpx.tracks[0].segments[0].points[i].time = time - removed
+                    gpx.tracks[0].segments[0].points[i-1].time = time - removed
                 last = time
 
     print('Elapsed time: {}s'.format(last - start + removed))
