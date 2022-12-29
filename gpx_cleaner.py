@@ -13,6 +13,7 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
     tot_dist = 0.
     ret_data = {}
     speed = None
+    elapsedTime = None
 
     for track in gpx.tracks:
         for segment in track.segments:
@@ -32,19 +33,21 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
                     #if (abs(d) < 3) and ((time - last) > datetime.timedelta(seconds=0)):
                     if (time > last):
                         print('time > last')
-                        speed = abs(d) / (time - last).total_seconds()
+                        elapsedTime = time - last
+                        speed = abs(d) / elapsedTime.total_seconds()
                     elif (last > time):
                         print('last > time')
-                        speed = abs(d) / (last - time).total_seconds()
+                        elapsedTime = last - time
+                        speed = abs(d) / elapsedTime.total_seconds()
                     else:
                         speed = 0.0
                         
                     #print('** Check: index={}, speed={}, d={}'.format(i, speed, d))
                     # use speed instead of absolute distance travelled. if speed is < maximumSpeedAsPaused, then the recording could have paused.
                     if (speed <= maximumSpeedAsPaused):
-                        print('Pause {}: {}s | {:.3f}m - speed={}'.format(stops+1, time - last, d, speed))
-                        ret_data['Pause {}'.format(stops+1)] = [time - last, d]
-                        removed += time - last
+                        print('Pause {}: {}s | {:.3f}m - speed={}'.format(stops+1, elapsedTime, d, speed))
+                        ret_data['Pause {}'.format(stops+1)] = [elapsedTime, d]
+                        removed += elapsedTime
                         stops += 1
                     else:
                         tot_dist += d
