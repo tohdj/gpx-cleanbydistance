@@ -23,12 +23,14 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
                 if last is not None:
                     last_point = segment.points[i-1]
                     d = distance((point.latitude, point.longitude), (last_point.latitude, last_point.longitude)).m
+                    
                     #if time - last > datetime.timedelta(seconds=1):
                     # if absolute distance travelled is less than 3m, then the recording could have paused.
                     # time - last must be positive, or td_to_str() will crash.
                     #if (abs(d) < 3) and ((time - last) > datetime.timedelta(seconds=0)):
                     if ((time - last) > datetime.timedelta()):
                         speed = abs(d) / (time - last).total_seconds()
+                        print('Check: index={}, speed={}, d={}'.format(i, speed, d, ))
                         # use speed instead of absolute distance travelled. if speed is < 0.25m/s then the recording could have paused.
                         if (speed <= maximumSpeedAsPaused):
                             print('Pause {}: {}s | {:.3f}m - speed={}'.format(stops+1, time - last, d, speed))
