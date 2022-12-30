@@ -19,6 +19,7 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
                 time = point.time
                 if i == 0:
                     start = time
+                print('Check: i={} time={}s removed={}s'.format(i, time, removed))
                 time -= removed
                 if last is not None:
                     last_point = segment.points[i-1]
