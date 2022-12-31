@@ -6,68 +6,71 @@ from geopy.distance import distance
 def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value as 0.25
 
     gpx = activity_gpx
-    removed = datetime.timedelta()
-    last = None
-    start = None
-    stops = 0
-    tot_dist = 0.
-    ret_data = {}
+    startPointTime = None
+    totalPausedTime = datetime.timedelta()
     elapsedTime = datetime.timedelta()
+    lastPointTime = None
+    numberOfPauses = 0
+    totalPausedDistance = 0.
+    ret_data = {}
 
     for track in gpx.tracks:
         for segment in track.segments:
-            for i, point in enumerate(segment.points):
-                time = point.time
+            for i, currentPoint in enumerate(segment.points):
+                # Set a currentPoint's time as currentPointTime
+                currentPointTime = currentPoint.time
 
-                # If this is the first recorded point, then set start as the time for this recorded point
+                # If this is the first recorded point, then set startPointTime as the time for this recorded point
                 if i == 0:
-                    start = time
+                    startPointTime = currentPointTime
 
-                # Offset the recorded time backwards by the removed paused time
-                time -= removed
-                if last is not None:
-                    last = last - datetime.timedelta(seconds=elapsedTime.total_seconds())
-                    last_point = segment.points[i-1]
-                    d = distance((point.latitude, point.longitude), (last_point.latitude, last_point.longitude)).m
+                # Offset the currentPointTime backwards by the totalPausedTime
+                currentPointTime -= totalPausedTime
+
+                # If we are not processing the first currentPoint, then we do this.
+                if lastPointTime is not None:
+                    # Offset the currentPointTime backwards by the elapsedTime
+                    lastPointTime = lastPointTime - datetime.timedelta(seconds=elapsedTime.total_seconds())
+                    # Get the lastPoint
+                    lastPoint = segment.points[i-1]
+                    # Calculate the distance between the last point and the currentPointTime
+                    d = distance((currentPoint.latitude, currentPoint.longitude), (lastPoint.latitude, lastPoint.longitude)).m
 
                     # Reset elapsedTime to nil
                     elapsedTime = datetime.timedelta()
 
-                    #if time - last > datetime.timedelta(seconds=1):
-                    # if absolute distance travelled is less than 3m, then the recording could have paused.
-                    # time - last must be positive, or td_to_str() will crash.
-                    #if (abs(d) < 3) and ((time - last) > datetime.timedelta(seconds=0)):
-                    #print('time={}, last={}, elapsed={}'.format(time, last, elapsedTime))
-                    if ((time - last) > datetime.timedelta(seconds=0)):
-                        # Calculate the speed to travel from the last point to the current point
-                        speed = abs(d) / (time - last).total_seconds()
+                    # We check that currentPointTime - lastPointTime is positive, or the program will crash.
+                    if ((currentPointTime - lastPointTime) > datetime.timedelta(seconds=0)):
+                        # Calculate the speed to travel from the lastPointTime point to the current point
+                        speed = abs(d) / (currentPointTime - lastPointTime).total_seconds()
                         # use speed instead of absolute distance travelled. if speed is <= maximumSpeedAsPaused then the recording could have paused.
                         if (speed <= maximumSpeedAsPaused):
-                            print('Pause {}: {}s | {:.3f}m'.format(stops+1, time - last, d))
-                            ret_data['Pause {}'.format(stops+1)] = [time - last, d]
-                            # Update the total removed time
-                            removed += time - last
-                            # Update the elapsed time between the last point and the current point
-                            elapsedTime = time - last
+                            print('Pause {}: {}s | {:.3f}m'.format(numberOfPauses+1, currentPointTime - lastPointTime, d))
+                            ret_data['Pause {}'.format(numberOfPauses+1)] = [currentPointTime - lastPointTime, d]
+                            # Update the total totalPausedTime time
+                            totalPausedTime += currentPointTime - lastPointTime
+                            # Update the elapsed time between the lastPointTime point and the current point
+                            elapsedTime = currentPointTime - lastPointTime
                             # Update the number of paused points
-                            stops += 1
+                            numberOfPauses += 1
                         else:
-                            tot_dist += d
+                            totalPausedDistance += d
                     else:
-                        tot_dist += d
-                # if there was paused points in this file, then offset all points backwards by the total removed time
-                if removed > datetime.timedelta():
-                    gpx.tracks[0].segments[0].points[i].time = time - removed
-                last = time
+                        totalPausedDistance += d
+                # if there was paused points in this file, then offset all points backwards by the total totalPausedTime time
+                if totalPausedTime > datetime.timedelta():
+                    gpx.tracks[0].segments[0].points[i].time = currentPointTime - totalPausedTime
+                # Set the lastPointTime with the currentPointTime
+                lastPointTime = currentPointTime
 
-    print('Elapsed time: {}s'.format(last - start + removed))
-    print('Moving time: {}s'.format(last - start))
-    print('Paused time: {}s'.format(removed))
-    print('Total distance: {:.3f}m'.format(tot_dist/1000.))
-    ret_data['Elapsed time'] = last - start + removed
-    ret_data['Moving time'] = last - start
-    ret_data['Total distance'] = tot_dist/1000.
-    ret_data['Paused time'] = removed
+    print('Elapsed time: {}s'.format(lastPointTime - startPointTime + totalPausedTime))
+    print('Moving time: {}s'.format(lastPointTime - startPointTime))
+    print('Paused time: {}s'.format(totalPausedTime))
+    print('Total distance: {:.3f}m'.format(totalPausedDistance/1000.))
+    ret_data['Elapsed time'] = lastPointTime - startPointTime + totalPausedTime
+    ret_data['Moving time'] = lastPointTime - startPointTime
+    ret_data['Total distance'] = totalPausedDistance/1000.
+    ret_data['Paused time'] = totalPausedTime
     gpx_xml = gpx.to_xml()
     return gpx_xml, ret_data
 
