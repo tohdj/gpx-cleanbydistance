@@ -63,15 +63,17 @@ def show():
 
         #st.write("Uploaded file: **{}**".format(gpx_file_raw.name))
         activity_name = gpx_file_raw.name.split('.')[0] + '_clean.gpx'
-        st.write("⏸️ Paused the watch **{}** times:".format(len(stop_keys)))
-        # Print out all the paused points
-        for i in range(len(stop_keys)):
-            st.write("- ⏸️ Pause {}: **{}**".format(i+1, td_to_str(data[stop_keys[i]][0])))
+
+        # Print out the calculated information
         st.write("⌛ Elapsed time: **{}** ➡️ **{}**".format(td_to_str(data['Elapsed time']),
                                                            td_to_str(data['Moving time'])))
         st.write("🏃 Moving time: **{}**".format(td_to_str(data['Moving time'])))
         st.write("⏸ Paused time: **{}** ➡️ **0s**".format(td_to_str(data['Paused time'])))
         st.write("🛣️ Total distance: **{:.3f}m**".format(data['Total distance']))
+        # Print out all the paused points
+        st.write("⏸️ Paused the watch **{}** times:".format(len(stop_keys)))
+        for i in range(len(stop_keys)):
+            st.write("- ⏸️ Pause {}: **{}**".format(i+1, td_to_str(data[stop_keys[i]][0])))
 
         st.download_button(
             label="📂 Download clean GPX file",
