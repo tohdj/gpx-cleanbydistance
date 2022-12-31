@@ -12,7 +12,7 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
     stops = 0
     tot_dist = 0.
     ret_data = {}
-    elapsedTime = None
+    elapsedTime = datetime.timedelta()
 
     for track in gpx.tracks:
         for segment in track.segments:
