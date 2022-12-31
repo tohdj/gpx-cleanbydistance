@@ -20,24 +20,7 @@ def get_pace(dist, time, mile=False):
 
 
 def td_to_str(td):
-    # if the recordings for GPS crosses midnight, then this function will crash.
-    # The "-1 day, " substring must be removed, so the function can continue to extract the H, M and S
-    td = str(td)
-    if "-1 day, " in td:
-        td = td.replace("-1 day, ", "")
-
-    #td = datetime.datetime.strptime(str(td), "%H:%M:%S")
-    # if the td comes in different formats.
-    try:
-        td = datetime.datetime.strptime(td, "%Y-%m-%d %H:%M:%S.%f")
-    except:
-        try:
-            td = datetime.datetime.strptime(td, "%Y/%m/%d %H:%M:%S.%f")
-        except:
-            try:
-                td = datetime.datetime.strptime(td, "%H:%M:%S.%f")
-            except:
-                td = datetime.datetime.strptime(td, "%H:%M:%S")
+    td = datetime.datetime.strptime(str(td), "%H:%M:%S")
     if td.hour != 0:
         td = td.strftime('%Hh %Mm %Ss')
     else:
@@ -81,8 +64,8 @@ def show():
         #st.write("Uploaded file: **{}**".format(gpx_file_raw.name))
         activity_name = gpx_file_raw.name.split('.')[0] + '_clean.gpx'
         st.write("⏸️ Paused the watch **{}** times:".format(len(stop_keys)))
+        # Print out all the paused points
         for i in range(len(stop_keys)):
-            print(data[stop_keys[i]])
             st.write("- ⏸️ Pause {}: **{}**".format(i+1, td_to_str(data[stop_keys[i]][0])))
         st.write("⌛ Elapsed time: **{}** ➡️ **{}**".format(td_to_str(data['Elapsed time']),
                                                            td_to_str(data['Moving time'])))
