@@ -21,7 +21,7 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
                 if i == 0:
                     start = time
                 if last is not None:
-                    last = last - datetime.timedelta(seconds=elapsedTime.total_seconds()))
+                    last = last - datetime.timedelta(seconds=elapsedTime.total_seconds())
                     print('Check i={}: time={}, time-removed={}, last={}'.format(i, time, time - removed, last))
                 time -= removed
                 if last is not None:
