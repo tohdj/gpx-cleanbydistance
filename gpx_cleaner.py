@@ -20,7 +20,7 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
                 time = point.time
                 if i == 0:
                     start = time
-                print('Check i={}: time={}, time-removed={}, last={}'.format(i, time, time - removed, last))
+                print('Check i={}: time={}, time-removed={}, last={}'.format(i, time, time - removed, last-elapsedTime))
                 time -= removed
                 if last is not None:
                     last_point = segment.points[i-1]
@@ -30,7 +30,7 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
                     # time - last must be positive, or td_to_str() will crash.
                     #if (abs(d) < 3) and ((time - last) > datetime.timedelta(seconds=0)):
                     elapsedTime = time - last
-                    print('time={}, last={}, elapsed={}'.format(time, last, elapsedTime))
+                    #print('time={}, last={}, elapsed={}'.format(time, last, elapsedTime))
                     if ((time - last) > datetime.timedelta(seconds=0)):
                         speed = abs(d) / (time - last).total_seconds()
                         # use speed instead of absolute distance travelled. if speed is <= maximumSpeedAsPaused then the recording could have paused.
