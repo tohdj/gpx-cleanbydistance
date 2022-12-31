@@ -18,36 +18,44 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
         for segment in track.segments:
             for i, point in enumerate(segment.points):
                 time = point.time
+
+                # If this is the first recorded point, then set start as the time for this recorded point
                 if i == 0:
                     start = time
-                #if last is not None:
-                    #print('Check i={}: time={}, time-removed={}, last={}'.format(i, time, time - removed, last))
-                    #last = last - datetime.timedelta(seconds=elapsedTime.total_seconds())
-                    #print('Updated last={} elapsedTime.total_seconds()={}'.format(last, elapsedTime.total_seconds()))
+
+                # Offset the recorded time backwards by the removed paused time
                 time -= removed
                 if last is not None:
                     last = last - datetime.timedelta(seconds=elapsedTime.total_seconds())
                     last_point = segment.points[i-1]
                     d = distance((point.latitude, point.longitude), (last_point.latitude, last_point.longitude)).m
+
+                    # Reset elapsedTime to nil
+                    elapsedTime = datetime.timedelta()
+
                     #if time - last > datetime.timedelta(seconds=1):
                     # if absolute distance travelled is less than 3m, then the recording could have paused.
                     # time - last must be positive, or td_to_str() will crash.
                     #if (abs(d) < 3) and ((time - last) > datetime.timedelta(seconds=0)):
                     #print('time={}, last={}, elapsed={}'.format(time, last, elapsedTime))
-                    elapsedTime = datetime.timedelta()
                     if ((time - last) > datetime.timedelta(seconds=0)):
+                        # Calculate the speed to travel from the last point to the current point
                         speed = abs(d) / (time - last).total_seconds()
                         # use speed instead of absolute distance travelled. if speed is <= maximumSpeedAsPaused then the recording could have paused.
                         if (speed <= maximumSpeedAsPaused):
                             print('Pause {}: {}s | {:.3f}m'.format(stops+1, time - last, d))
                             ret_data['Pause {}'.format(stops+1)] = [time - last, d]
+                            # Update the total removed time
                             removed += time - last
+                            # Update the elapsed time between the last point and the current point
                             elapsedTime = time - last
+                            # Update the number of paused points
                             stops += 1
                         else:
                             tot_dist += d
                     else:
                         tot_dist += d
+                # if there was paused points in this file, then offset all points backwards by the total removed time
                 if removed > datetime.timedelta():
                     gpx.tracks[0].segments[0].points[i].time = time - removed
                 last = time
