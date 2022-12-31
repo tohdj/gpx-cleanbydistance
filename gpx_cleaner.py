@@ -20,12 +20,13 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
                 time = point.time
                 if i == 0:
                     start = time
-                if last is not None:
-                    print('Check i={}: time={}, time-removed={}, last={}'.format(i, time, time - removed, last))
-                    last = last - datetime.timedelta(seconds=elapsedTime.total_seconds())
-                    print('Updated last={} elapsedTime.total_seconds()={}'.format(last, elapsedTime.total_seconds()))
+                #if last is not None:
+                    #print('Check i={}: time={}, time-removed={}, last={}'.format(i, time, time - removed, last))
+                    #last = last - datetime.timedelta(seconds=elapsedTime.total_seconds())
+                    #print('Updated last={} elapsedTime.total_seconds()={}'.format(last, elapsedTime.total_seconds()))
                 time -= removed
                 if last is not None:
+                    last = last - datetime.timedelta(seconds=elapsedTime.total_seconds())
                     last_point = segment.points[i-1]
                     d = distance((point.latitude, point.longitude), (last_point.latitude, last_point.longitude)).m
                     #if time - last > datetime.timedelta(seconds=1):
