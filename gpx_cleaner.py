@@ -115,10 +115,9 @@ def run_v2(activity_gpx, maximumSpeedAsPaused = 1.0): # We set the default value
                         # Calculate the speed to travel from the lastPointTime point to the current point
                         speed = abs(d) / (currentPointTime - lastPointTime).total_seconds()
                         dt = (currentPointTime - lastPointTime).total_seconds()
-                        print(f'Point at ({currentPoint.latitude},{currentPoint.longitude}) -> s={speed} -> d={d} -> t={dt}')
                         # use speed instead of absolute distance travelled. if speed is <= maximumSpeedAsPaused then the recording could have paused.
                         if (speed <= maximumSpeedAsPaused):
-                            print('Skipping this point')
+                            print(f'Point at ({currentPoint.latitude},{currentPoint.longitude}) -> s={speed} -> d={d} -> t={dt} -> Skipping this point')
                             #print('Pause {}: {}s | {:.3f}m'.format(numberOfPauses+1, currentPointTime - lastPointTime, d))
                             ret_data['Pause {}'.format(numberOfPauses+1)] = [currentPointTime - lastPointTime, d]
                             # Update the total totalPausedTime time
@@ -128,8 +127,10 @@ def run_v2(activity_gpx, maximumSpeedAsPaused = 1.0): # We set the default value
                             # Update the number of paused points
                             numberOfPauses += 1
                         else:
+                            print(f'Point at ({currentPoint.latitude},{currentPoint.longitude}) -> s={speed} -> d={d} -> t={dt}')
                             totalDistance += d
                     else:
+                        print(f'Point at ({currentPoint.latitude},{currentPoint.longitude}) -> s={speed} -> d={d} -> t={dt}')
                         totalDistance += d
                 # if there was paused points in this file, then offset all points backwards by the total totalPausedTime time
                 if totalPausedTime > datetime.timedelta():
@@ -137,8 +138,6 @@ def run_v2(activity_gpx, maximumSpeedAsPaused = 1.0): # We set the default value
                 # Set the lastPointTime with the currentPointTime
                 lastPointTime = currentPointTime
 
-    print('Start time: {}s'.format(startPointTime))
-    print('End time: {}s'.format(lastPointTime))
     print('Elapsed time: {}s'.format(lastPointTime - startPointTime + totalPausedTime))
     print('Moving time: {}s'.format(lastPointTime - startPointTime))
     print('Paused time: {}s'.format(totalPausedTime))
