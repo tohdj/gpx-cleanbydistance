@@ -50,7 +50,7 @@ def show():
     st.write("For example, cycling generally has a much higher movement speed than running.")
 
     st.write('Select the maximum movement speed value to consider as paused:')
-    maximumSpeedAsPaused = st.slider('Select a range of values', 0.0, 2.0, 0.25, 0.05, None, None, "If the speed between 2 recorded points is below this value, then it is considered to have paused.")
+    maximumSpeedAsPaused = st.slider('Select a range of values', 0.0, 2.0, 1.0, 0.05, None, None, "If the speed between 2 recorded points is below this value, then it is considered to have paused.")
     st.write('You have selected the maximum movement speed value as:', maximumSpeedAsPaused)
 
     gpx_file_raw = st.file_uploader("📂 Upload your activity.gpx file", type=["gpx"], accept_multiple_files=False)
