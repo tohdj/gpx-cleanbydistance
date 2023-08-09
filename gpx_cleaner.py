@@ -2,7 +2,7 @@ import gpxpy.gpx
 import datetime
 from geopy.distance import distance
 
-def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value as 0.25
+def run(activity_gpx, maximumSpeedAsPaused = 1.0): # We set the default value as 1.0
 
     gpx = activity_gpx
     startPointTime = None
@@ -73,7 +73,7 @@ def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value a
     gpx_xml = gpx.to_xml()
     return gpx_xml, ret_data
 
-def run_v2(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value as 0.25
+def run_v2(activity_gpx, maximumSpeedAsPaused = 1.0): # We set the default value as 1.0
 
     gpx = activity_gpx
     startPointTime = None
