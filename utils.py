@@ -56,15 +56,17 @@ def show():
     if gpx_file_raw is not None:
 
         gpx_file = gpxpy.parse(gpx_file_raw)
-        gpx_xlm, data = run(gpx_file, maximumSpeedAsPaused)
+        gpx_xlm, data = run_v2(gpx_file, maximumSpeedAsPaused)
 
         data_keys = data.keys()
         stop_keys = [key for key in data_keys if 'Pause ' in key]
 
         #st.write("Uploaded file: **{}**".format(gpx_file_raw.name))
-        activity_name = gpx_file_raw.name.split('.')[0] + '_clean.gpx'
+        activity_name = gpx_file_raw.name.split('.')[0] + '_v2_clean.gpx'
 
         # Print out the calculated information
+        st.write("⌛ Start time: **{}** ➡️ **{}**".format(td_to_str(data['Start time'])))
+        st.write("⌛ End time: **{}** ➡️ **{}**".format(td_to_str(data['End time'])))
         st.write("⌛ Elapsed time: **{}** ➡️ **{}**".format(td_to_str(data['Elapsed time']),
                                                            td_to_str(data['Moving time'])))
         st.write("🏃 Moving time: **{}**".format(td_to_str(data['Moving time'])))
