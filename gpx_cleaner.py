@@ -107,8 +107,6 @@ def run_v2(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default valu
                     # Calculate the distance between the last point and the currentPointTime
                     d = distance((currentPoint.latitude, currentPoint.longitude), (lastPoint.latitude, lastPoint.longitude)).m
                     
-                    print(f'Point at ({currentPoint.latitude},{currentPoint.longitude}) -> {currentPoint.elevation}')
-
                     # Reset elapsedTime to nil
                     elapsedTime = datetime.timedelta()
 
@@ -116,10 +114,10 @@ def run_v2(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default valu
                     if ((currentPointTime - lastPointTime) > datetime.timedelta(seconds=0)):
                         # Calculate the speed to travel from the lastPointTime point to the current point
                         speed = abs(d) / (currentPointTime - lastPointTime).total_seconds()
+                        print(f'Point at ({currentPoint.latitude},{currentPoint.longitude}) -> {speed}')
                         # use speed instead of absolute distance travelled. if speed is <= maximumSpeedAsPaused then the recording could have paused.
                         if (speed <= maximumSpeedAsPaused):
-                        # Check if the current and last coordinates are the same
-                        #if ((currentPoint.latitude == lastPoint.latitude) and (currentPoint.longitude == lastPoint.longitude))
+                            print('Skipping this point')
                             #print('Pause {}: {}s | {:.3f}m'.format(numberOfPauses+1, currentPointTime - lastPointTime, d))
                             ret_data['Pause {}'.format(numberOfPauses+1)] = [currentPointTime - lastPointTime, d]
                             # Update the total totalPausedTime time
