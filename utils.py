@@ -2,6 +2,7 @@ import streamlit as st
 import math
 import gpxpy
 from gpx_cleaner import run
+from gpx_cleaner import run_v2
 import datetime
 
 
