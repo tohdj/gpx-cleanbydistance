@@ -2,7 +2,6 @@ import gpxpy.gpx
 import datetime
 from geopy.distance import distance
 
-
 def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value as 0.25
 
     gpx = activity_gpx
