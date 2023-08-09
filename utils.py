@@ -66,8 +66,8 @@ def show():
         activity_name = gpx_file_raw.name.split('.')[0] + '_v2_clean.gpx'
 
         # Print out the calculated information
-        st.write("⌛ Start time: **{}** ➡️ **{}**".format(td_to_str(data['Start time'])))
-        st.write("⌛ End time: **{}** ➡️ **{}**".format(td_to_str(data['End time'])))
+        st.write("⌛ Start time: **{}**".format(td_to_str(data['Start time'])))
+        st.write("⌛ End time: **{}**".format(td_to_str(data['End time'])))
         st.write("⌛ Elapsed time: **{}** ➡️ **{}**".format(td_to_str(data['Elapsed time']),
                                                            td_to_str(data['Moving time'])))
         st.write("🏃 Moving time: **{}**".format(td_to_str(data['Moving time'])))
