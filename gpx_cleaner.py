@@ -114,7 +114,7 @@ def run_v2(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default valu
                     if ((currentPointTime - lastPointTime) > datetime.timedelta(seconds=0)):
                         # Calculate the speed to travel from the lastPointTime point to the current point
                         speed = abs(d) / (currentPointTime - lastPointTime).total_seconds()
-                        print(f'Point at ({currentPoint.latitude},{currentPoint.longitude}) -> {speed}')
+                        print(f'Point at ({currentPoint.latitude},{currentPoint.longitude}) -> s={speed} -> d={d}')
                         # use speed instead of absolute distance travelled. if speed is <= maximumSpeedAsPaused then the recording could have paused.
                         if (speed <= maximumSpeedAsPaused):
                             print('Skipping this point')
