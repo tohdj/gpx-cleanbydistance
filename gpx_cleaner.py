@@ -2,7 +2,6 @@ import gpxpy.gpx
 import datetime
 from geopy.distance import distance
 
-
 def run(activity_gpx, maximumSpeedAsPaused = 0.25): # We set the default value as 0.25
 
     gpx = activity_gpx
@@ -159,12 +158,12 @@ if __name__ == '__main__':
     gpx_file = open(activity_gpx, 'r')
     gpx = gpxpy.parse(gpx_file)
     # Process the GPX file version 1
-    activity_name = activity_gpx.split('.')[0] + '_clean.gpx'
-    gpx_xml, data = run(gpx)
-    with open(activity_name, 'w') as f:
-        f.write(gpx_xml)
-    print('Created {}'.format(activity_name))
-    # Process the GPX file version 1
+    #activity_name = activity_gpx.split('.')[0] + '_clean.gpx'
+    #gpx_xml, data = run(gpx)
+    #with open(activity_name, 'w') as f:
+    #    f.write(gpx_xml)
+    #print('Created {}'.format(activity_name))
+    # Process the GPX file version 2
     activity_name = activity_gpx.split('.')[0] + '_v2_clean.gpx'
     gpx_xml, data = run_v2(gpx)
     with open(activity_name, 'w') as f:
